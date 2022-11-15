@@ -114,6 +114,27 @@ half();
 }
 }
 
+
+module noMachine(){
 halfH();
 mirror([0,1,0]){
    halfH();}
+   }
+   
+module yesMachine(){
+    half();
+    mirror([0,1,0]){
+        half();}
+    }
+
+// IMPORTANT: 
+
+// If you have a sewing machine that can do leather, uncomment the following module, "yesMachine."
+  
+   //yesMachine();
+   
+    //Otherwise, uncomment  //noMachine
+   
+   noMachine();
+   
+   
