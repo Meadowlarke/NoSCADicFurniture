@@ -33,6 +33,7 @@ heelScoopRounding=1000;
 pointRounding=1;
 
 holeD=1;
+ribbonHoleD=6;
 
 
 module half(){
@@ -96,6 +97,24 @@ points=[[0,0,50],
 polygon(polyRound(points, 10));
 }
 
+
+// Cutting holes in heel for ribbon
+
+module halfSlot(){
+    difference(){
+    half();
+        
+        translate([length-heelLength*.6,width*.87,0]){
+        circle(d=ribbonHoleD);}
+        
+        translate([length-heelLength*.7,width*.87,0]){
+        circle(d=ribbonHoleD);}
+        
+        }
+    }
+
+
+
 // Hole module for sewing
 
 module hole(){
@@ -105,27 +124,116 @@ module hole(){
 // Punching sewing holes
 module halfH() {
 difference(){
-half();
-    translate([holeD+toeRake,width+toeOverhang-2*holeD,0]){hole();}
-    translate([holeD+toeRake/2, width, 0]){hole();}
-    translate([holeD,width/2,0]){
-   hole();}
+halfSlot();
+    
+     translate([holeD*1/2+toeRake,width+toeOverhang-2*holeD, 0]){hole();}
+    
+     translate([holeD+toeRake*12/16,width+toeOverhang*12/15, 0]){hole();}
+    
+    translate([holeD+toeRake*11/16,width+toeOverhang*9/15, 0]){hole();}
+    
+    translate([holeD+toeRake*10/16,width+toeOverhang*6/15, 0]){hole();}
+    
+    translate([holeD+toeRake*9/16,width+toeOverhang*3/15, 0]){hole();}
+    
+    // Holes on main body
+    
+    
+    translate([holeD+toeRake*8/16,width*16/16, 0]){hole();}
+    
+    translate([holeD+toeRake*7/16,width*15/16, 0]){hole();}
+    
+    translate([holeD+toeRake*6/16,width*14/16, 0]){hole();}
+    
+    translate([holeD+toeRake*5/16 ,width*13/16, 0]){hole();}
+    
+    translate([holeD+toeRake*4/16,width*12/16, 0]){hole();}
 
+    translate([holeD+toeRake*3/16,width*11/16, 0]){hole();}
+    
+    translate([holeD+toeRake*2/16,width*10/16, 0]){hole();}
+    
+    translate([holeD+toeRake*1/16,width*9/16, 0]){hole();}
+    
+    translate([holeD,width*8/16,0]){hole();}
+
+    // Holes on bottom curve
+   
+    translate([holeD+toeL*1/128,width*7/16,0]){hole();}
+    
+    translate([holeD+toeL*2/128,width*6/16,0]){hole();}
+
+    translate([holeD+toeL*6/128,width*5/16,0]){hole();}
+
+    translate([holeD+toeL*11/128,width*4/16,0]){hole();}
+
+    translate([holeD+toeL*18/128,width*3/16,0]){hole();}
+
+    translate([toeL*30/128,width*2/16,0]){hole();}
+
+    translate([toeL*40/128,holeD+width*2/32,0]){hole();}
+
+    translate([toeL*50/128,holeD+width*1/32,0]){hole();}
+
+    translate([toeL*60/128,holeD*2,0]){hole();}
+  
+    // Heel
+    
+    translate([length-heelCurve*25/16,width*4/128,]){hole();}
+    
+    translate([length-heelCurve*44/32,width*6/128,]){hole();}
+    
+    translate([length-heelCurve*38/32,width*8/128,]){hole();}
+    
+    translate([length-heelCurve*32/32,width*12/128,]){hole();}
+    
+    translate([length-heelCurve*26/32,width*18/128,]){hole();}
+    
+    translate([length-heelCurve*20/32,width*28/128,]){hole();}
+    
+    translate([length-heelCurve*15/32,width*38/128,]){hole();}
+    
+    
+    translate([length-heelCurve*10/32-holeD,width*48/128,]){hole();}
+    
+    translate([length-heelCurve*7/32-holeD,width*58/128,]){hole();}
+    
+    translate([length-heelCurve*5/32-holeD,width*68/128,]){hole();}
+    
+    translate([length-heelCurve*3/32-holeD,width*78/128,]){hole();}
+    
+    translate([length-heelCurve*2/32-holeD,width*90/128,]){hole();}
+    
+    translate([length-heelCurve*1/32-holeD,width*102/128,]){hole();}
+    
+    translate([length-heelCurve*1/64-holeD,width*114/128,]){hole();}   
+    
+    translate([length-heelCurve*0/32-holeD,width*128/128,0]){hole();}
+    
+    translate([length-heelCurve*0/32-holeD,width+heelOverhang*1/2,0]){hole();}
+    
+    translate([length-heelCurve*0/32-holeD,width+heelOverhang-2*holeD,0]){hole();}
+    
+    
+    
+    
 }
 }
 
 
 module noMachine(){
+    translate([0, width+tabL,0]){
 halfH();
 mirror([0,1,0]){
    halfH();}
-   }
+   }}
    
 module yesMachine(){
-    half();
+    translate([0,width+tabL,0]){
+    halfSlot();
     mirror([0,1,0]){
-        half();}
-    }
+        halfSlot();}
+    }}
 
 // IMPORTANT: 
 
@@ -137,4 +245,4 @@ module yesMachine(){
    
    noMachine();
    
-   
+ 
