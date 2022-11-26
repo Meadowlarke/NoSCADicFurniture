@@ -36,6 +36,8 @@ holeD=1;
 ribbonHoleD=6;
 
 
+seamTabW=10;
+
 module half(){
 
 
@@ -219,6 +221,20 @@ halfSlot();
     
 }
 }
+
+
+// Making seam tabs
+
+
+// Toe seam tab (bottom)
+
+translate([length-heelCurve-heelLength-sin(tab4angle)*tabL,0,0]){
+square([2*toeL,seamTabW]);}
+
+// Heel seam tab (top)
+
+translate([length-heelLength-heelCurve-sin(tab4angle)*tabL,width*2+tabL*2-seamTabW,0]){
+square([2*heelCurve+width,seamTabW]);}
 
 
 module noMachine(){
