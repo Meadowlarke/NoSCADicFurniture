@@ -1,12 +1,12 @@
 include <../Round-Anything/polyround.scad>
 
-// Set length equal to length of foot. Adjust width, toe length, and heel length as needed.
-
 $fa = 1;
 $fs = 0.01;
 
-// This makes small holes actually round, not hexagons
+// ↑ This makes small holes actually round, not hexagons ↑
 
+
+// ↓ Set length equal to length of foot. Adjust width, toe length, and heel length as needed. ↓
 
 width=61;
 length=310;
