@@ -1,3 +1,5 @@
+// NOTE, IF YOU ARE CUTTING THIS OUT ON THE ARTISANS ASYLUM CNC PLASMA CUTTER, YOU WILL HAVE TO ENTER ALL THE VALUES IN INCHES, RATHER THAN MM!
+
 headW=10; // Width of head
 headL=5; // Length of head
 shaftW=8; // Width of shaft at widest point
