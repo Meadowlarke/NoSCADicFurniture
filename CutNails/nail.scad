@@ -1,8 +1,8 @@
-headW=10;
-headL=5;
-shaftW=8;
-pointW=2;
-length=60; 
+headW=10; // Width of head
+headL=5; // Length of head
+shaftW=8; // Width of shaft at widest point
+pointW=2; // Width of point
+length=60; // Length of shaft
 
 CNCKerf=3; // Kerf of machine
 
