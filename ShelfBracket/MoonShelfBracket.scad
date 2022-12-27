@@ -5,7 +5,7 @@ include <../Round-Anything/polyround.scad>
 $fn=360; // This makes round edges acutually round.  
 
 sidex = 300; // Board side
-sidey = 200; // Wall side
+sidey = sidex; // Wall side
 width = 25;
 allowance = 1; // Bend allowance for thickness of steel, check table. For 1/8 mild steel bend allowance
 
@@ -13,13 +13,14 @@ screwHead = 13;
 screwShaft = 10;
 
 thickness = 5;
-
     bridgeW = 30;
 
-overlap = 5; // How much of the bridge is "ground down" to give surface for welding
+overlap = 1; // How much of the bridge is "ground down" to give surface for welding
 
-sidexB = sidex-screwShaft*2-width/4-bridgeW/2; // Shortened value of x to more easily draw the bridge length
-sideyB = sidey-screwShaft*2-width/4-bridgeW/2; // Same idea
+sidexB = sidex*.7; // Shortened value of x to more easily draw the bridge length
+sideyB = sidey*.7; // Same idea
+
+
 
 
   module dropHole(){
@@ -139,16 +140,14 @@ module strapy(){ //This is a copy of strapytrude minus the extrusion... Less tha
 
 
 
-module TwoDBridge() {
-
 
 module outer(){
 
-translate([sidexB,sideyB,0]){
-scale([sidexB,sideyB,1]){
-circle(r = 1);
-}
-}
+
+
+circle(d = sidex);
+
+
 
 }
 
@@ -156,58 +155,37 @@ circle(r = 1);
 module inner(){
     
     
- translate([sidexB,sideyB,0]){
-scale([sidexB-bridgeW,sideyB-bridgeW,1]){
-circle(r = 1);
-}
-}   
+
+
+circle(d = sidex);
+
+   
     }
 
-module ring(){
-translate([-overlap,-overlap,0]){
+module moon(){
+translate([sidex/2,sidex/2,0]){
 difference(){
 outer();
+    translate([3/16*sidex,3/16*sidex,0]){
 inner();
-}
-}
-}
-
-
-
-// Primary part of the bridge    
-
-    intersection(){
-        square([sidexB,sideyB]);
-        ring();
-        
-        }    
-
-// Ball on z-axis
-
-intersection(){
-square([sidex,sidey]);
-translate([bridgeW/2-overlap,sideyB,0]){
-circle(d = bridgeW);
-}
-}
-
-// Ball on x-axis
-
-intersection(){
-square([sidex,sidey]);
-translate([sidexB,bridgeW/2-overlap,0]){
-circle(d = bridgeW);
-}
-}
-    
     }
+}
+}
+}
+
+
+   
+
+
+  
+    
     
     
     module bridge(){
-    translate([width/2-thickness/2,0,0]){
+    translate([width/2-thickness/2,-overlap,thickness-overlap]){
     rotate([90,0,90]){
         linear_extrude(thickness){
-    TwoDBridge();}
+    moon();}
         }}
     }
 
@@ -272,4 +250,4 @@ ThreeDModel();
 
 //TwoDStrap();
 
-//TwoDBridge();
+//moon();
