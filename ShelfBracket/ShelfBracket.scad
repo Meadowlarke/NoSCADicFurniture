@@ -1,4 +1,5 @@
-// 3d mockup to make sure that all the parts fit together. I still need to add the screw holes. 
+// This is combined document containing the 3D mockup and flat sheet metal files. 
+ 
 
 include <../Round-Anything/polyround.scad>
 
@@ -7,7 +8,7 @@ $fn=360; // This makes round edges acutually round.
 sidex = 300; // Board side
 sidey = 300; // Wall side
 width = 25;
-allowance = 10; // Bend allowance for thickness of steel, find a table for your material. This allowance is incoperated into the 2D renderings of the strap, but not the 3D renderings, or, in other words, the 3D renderings already take into account your bend allowance when all parts are present. 
+allowance = 1; // Bend allowance for thickness of steel, find a table for your material. This allowance is incoperated into the 2D renderings of the strap, but not the 3D renderings, or, in other words, the 3D renderings already take into account your bend allowance when all parts are present. 
 
 screwHead = 13;
 screwShaft = 10;
@@ -18,8 +19,8 @@ thickness = 5;
 
 overlap = 5; // How much of the bridge is "ground down" to give surface for welding
 
-sidexB = sidex-screwShaft*2-width/4-bridgeW/2+allowance/2; // Shortened value of x to more easily draw the bridge length
-sideyB = sidey-screwShaft*2-width/4-bridgeW/2+allowance/2; // Same idea
+sidexB = sidex-screwShaft*2-width/4-bridgeW/2; // Shortened value of x to more easily draw the bridge length
+sideyB = sidey-screwShaft*2-width/4-bridgeW/2; // Same idea
 
 
   module dropHole(){
@@ -63,7 +64,35 @@ module strapx(){
 
 module strapxtrude(){
     linear_extrude(thickness){
-        strapx();
+        
+        
+        difference(){ // Making strap with screw holes
+        
+        union(){ // Body of the strap
+        
+        square([width,sidex-width/2]);
+    
+    translate([width/2,sidex-width/2,0]){
+    circle(d = width);
+    }        
+        }
+        
+        // The holes
+        
+        translate([width/2, sidex - width/2,0]){
+       circle(d= screwShaft);}
+       
+       translate([width/2,screwShaft/2+width/2,0]){
+           
+           rotate([180,0,0]){
+       dropHole();}
+           
+           }
+        
+    } 
+        
+        
+        
     } 
 }
 
@@ -81,13 +110,13 @@ module strapytrude(){
            
            union(){
            
-    square([width,sidey-width/2-allowance/2]);
+    square([width,sidey-width/2]);
     
-    translate([width/2,sidey-width/2-allowance/2,0]){
+    translate([width/2,sidey-width/2,0]){
     circle(d = width);
     }
 }
-    translate([width/2,sidey-width/2-allowance/2,0]){
+    translate([width/2,sidey-width/2,0]){
     circle(d=screwShaft);
     }
 
@@ -265,8 +294,8 @@ module TwoDStrap(){
 }
 
 
-ThreeDModel();
+// ThreeDModel();
 
-//TwoDStrap();
+TwoDStrap();
 
 //TwoDBridge();
