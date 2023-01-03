@@ -40,6 +40,36 @@ module strapx(){
         
         union(){ // Body of the strap
         
+        square([width,sidex-width/2-allowance/2]);
+    
+    translate([width/2,sidex-width/2-allowance/2,0]){
+    circle(d = width);
+    }        
+        }
+        
+        // The holes
+        
+        translate([width/2, sidex - width/2-allowance/2,0]){
+       circle(d= screwShaft);}
+       
+       translate([width/2,screwShaft/2+width/2-allowance/2,0]){
+           
+           rotate([180,0,0]){
+       dropHole();}
+           
+           }
+        
+    }
+}
+
+module strapxtrude(){
+    linear_extrude(thickness){
+        
+        
+         difference(){ // Making strap with screw holes
+        
+        union(){ // Body of the strap
+        
         square([width,sidex-width/2]);
     
     translate([width/2,sidex-width/2,0]){
@@ -60,11 +90,8 @@ module strapx(){
            }
         
     }
-}
-
-module strapxtrude(){
-    linear_extrude(thickness){
-        strapx();
+        
+        
     } 
 }
 
@@ -108,22 +135,22 @@ module strapytrude(){
 }
 }
 
-module strapy(){ //This is a copy of strapytrude minus the extrusion... Less than ideal, but the only way that I can figure out how to get this to work.
+module strapy(){ 
              difference(){
            
            union(){
            
-    square([width,sidey-width/2]);
+    square([width,sidey-width/2-allowance/2]);
     
-    translate([width/2,sidey-width/2,0]){
+    translate([width/2,sidey-width/2-allowance/2,0]){
     circle(d = width);
     }
 }
-    translate([width/2,sidey-width/2,0]){
+    translate([width/2,sidey-width/2-allowance/2,0]){
     circle(d=screwShaft);
     }
 
-    translate([width/2,screwShaft/2+width/2,0]){
+    translate([width/2,screwShaft/2+width/2-allowance/2,0]){
         rotate([0,0,180]){
         dropHole();
         }
@@ -227,21 +254,16 @@ bendFillet();}
 
 
 module TwoDStrap(){
-    translate([0,sidey+allowance,0]){
+    translate([0,sidey-allowance/2,0]){
     strapx();
     }
     
-    translate([width,sidey,0]){
+    translate([width,sidey-allowance/2,0]){
     rotate([0,0,180]){
      strapy();
         }
     }
-    
-    // Little filler piece for bend allowance 
-    translate([0,sidey,0]){
-    square([width,allowance]);
-    }
-    
+        
     
 }
 
