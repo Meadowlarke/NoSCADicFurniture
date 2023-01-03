@@ -5,9 +5,9 @@ include <../Round-Anything/polyround.scad>
 $fn=360; // This makes round edges acutually round.  
 
 sidex = 300; // Board side
-sidey = 200; // Wall side
+sidey = 300; // Wall side
 width = 25;
-allowance = 1; // Bend allowance for thickness of steel, check table. For 1/8 mild steel bend allowance
+allowance = 10; // Bend allowance for thickness of steel, find a table for your material. This allowance is incoperated into the 2D renderings of the strap, but not the 3D renderings, or, in other words, the 3D renderings already take into account your bend allowance when all parts are present. 
 
 screwHead = 13;
 screwShaft = 10;
@@ -18,8 +18,8 @@ thickness = 5;
 
 overlap = 5; // How much of the bridge is "ground down" to give surface for welding
 
-sidexB = sidex-screwShaft*2-width/4-bridgeW/2; // Shortened value of x to more easily draw the bridge length
-sideyB = sidey-screwShaft*2-width/4-bridgeW/2; // Same idea
+sidexB = sidex-screwShaft*2-width/4-bridgeW/2+allowance/2; // Shortened value of x to more easily draw the bridge length
+sideyB = sidey-screwShaft*2-width/4-bridgeW/2+allowance/2; // Same idea
 
 
   module dropHole(){
@@ -39,19 +39,19 @@ module strapx(){
         
         union(){ // Body of the strap
         
-        square([width,sidex-width/2]);
+        square([width,sidex-width/2-allowance/2]);
     
-    translate([width/2,sidex-width/2,0]){
+    translate([width/2,sidex-width/2-allowance/2,0]){
     circle(d = width);
     }        
         }
         
         // The holes
         
-        translate([width/2, sidex - width/2,0]){
+        translate([width/2, sidex - width/2-allowance/2,0]){
        circle(d= screwShaft);}
        
-       translate([width/2,screwShaft/2+width/2,0]){
+       translate([width/2,screwShaft/2+width/2-allowance/2,0]){
            
            rotate([180,0,0]){
        dropHole();}
@@ -81,13 +81,13 @@ module strapytrude(){
            
            union(){
            
-    square([width,sidey-width/2]);
+    square([width,sidey-width/2-allowance/2]);
     
-    translate([width/2,sidey-width/2,0]){
+    translate([width/2,sidey-width/2-allowance/2,0]){
     circle(d = width);
     }
 }
-    translate([width/2,sidey-width/2,0]){
+    translate([width/2,sidey-width/2-allowance/2,0]){
     circle(d=screwShaft);
     }
 
@@ -107,22 +107,22 @@ module strapytrude(){
 }
 }
 
-module strapy(){ //This is a copy of strapytrude minus the extrusion... Less than ideal, but the only way that I can figure out how to get this to work.
+module strapy(){ //This is a copy of strapytrude without the extrusion... Less than ideal, but the only way that I can figure out how to get this to work.
              difference(){
            
            union(){
            
-    square([width,sidey-width/2]);
+    square([width,sidey-width/2-allowance/2]);
     
-    translate([width/2,sidey-width/2,0]){
+    translate([width/2,sidey-width/2-allowance/2,0]){
     circle(d = width);
     }
 }
-    translate([width/2,sidey-width/2,0]){
+    translate([width/2,sidey-width/2-allowance/2,0]){
     circle(d=screwShaft);
     }
 
-    translate([width/2,screwShaft/2+width/2,0]){
+    translate([width/2,screwShaft/2+width/2-allowance/2,0]){
         rotate([0,0,180]){
         dropHole();
         }
@@ -204,7 +204,7 @@ circle(d = bridgeW);
     
     
     module bridge(){
-    translate([width/2-thickness/2,0,0]){
+    translate([width/2-thickness/2,-thickness,0]){
     rotate([90,0,90]){
         linear_extrude(thickness){
     TwoDBridge();}
@@ -249,20 +249,17 @@ bendFillet();}
 
 
 module TwoDStrap(){
-    translate([0,sidey+allowance,0]){
+    translate([0,sidey-allowance/2,0]){
     strapx();
     }
     
-    translate([width,sidey,0]){
+    translate([width,sidey-allowance/2,0]){
     rotate([0,0,180]){
      strapy();
         }
     }
     
-    // Little filler piece for bend allowance 
-    translate([0,sidey,0]){
-    square([width,allowance]);
-    }
+
     
     
 }
