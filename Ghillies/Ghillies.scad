@@ -1,7 +1,7 @@
 include <../Round-Anything/polyround.scad>
 
 $fa = 1;
-$fs = 0.01;
+$fs = .01;
 
 // ↑ This makes small holes actually round, not hexagons ↑
 
@@ -136,11 +136,11 @@ halfSlot();
     
      translate([holeD*1/2+toeRake,width+toeOverhang-2*holeD, 0]){hole();}
     
-     translate([holeD+toeRake*12/16,width+toeOverhang*12/15, 0]){hole();}
+     translate([holeD+toeRake*13/16,width+toeOverhang*45/60, 0]){hole();}
     
-    translate([holeD+toeRake*11/16,width+toeOverhang*9/15, 0]){hole();}
+    translate([holeD+toeRake*12/16,width+toeOverhang*35/60, 0]){hole();}
     
-    translate([holeD+toeRake*10/16,width+toeOverhang*6/15, 0]){hole();}
+    translate([holeD+toeRake*21/32,width+toeOverhang*12/30, 0]){hole();}
     
     translate([holeD+toeRake*9/16,width+toeOverhang*3/15, 0]){hole();}
     

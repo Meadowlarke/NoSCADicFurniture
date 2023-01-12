@@ -1,18 +1,19 @@
 // Side B, the LONG side, in millimeters. Currently set to UHual small box internal sizes
 
 overhang=25.4;
-height = 320;
+height = 304.8;
 width=254; // Internal measurement
 length=415; // Internal measurement
 lengthE = length + overhang*2; // External measurment
-plywoodThickness=6.35;
+plywoodThickness=5.2;
 tabWidthL=length/2;
 handleDepth=25.4;
 handleX=108; // Including the radiused ends.
 handleY=38.1;
-fudge=.5; // Fudge factor for slots
+fudge=1; // Fudge factor for slots
 
-module B1() {
+
+
 module half(){
    
    
@@ -44,17 +45,39 @@ square([plywoodThickness+fudge, height/2]);
 // Tab slot
 
 translate([0, overhang, 0]){
-square([tabWidthL/2, plywoodThickness+fudge]);
+square([tabWidthL/2+fudge, plywoodThickness+fudge]);
     // See line 41
 }
 
 } // End difference block
 } // End defining module half
 
-half();
+module halfRound(){
+    
+    difference(){
+    half();
+        translate([length/2+plywoodThickness+fudge + (overhang-plywoodThickness-fudge)/2+.01 ,height-(overhang-plywoodThickness-fudge)+(overhang-plywoodThickness-fudge)/2+.01,0])
+    square((overhang-plywoodThickness-fudge)/2);
+        
+      translate([length/2+plywoodThickness+fudge + (overhang-plywoodThickness-fudge)/2+.01 ,0 ,0])
+    square((overhang-plywoodThickness-fudge)/2); 
+    }
+    
+    translate([length/2+plywoodThickness+fudge + (overhang-plywoodThickness-fudge)/2+.01 ,height-(overhang-plywoodThickness-fudge)+(overhang-plywoodThickness-fudge)/2+.01,0])
+    circle(d=(overhang-plywoodThickness-fudge));
+    
+    translate([length/2+plywoodThickness+fudge + (overhang-plywoodThickness-fudge)/2+.01 ,(overhang-plywoodThickness-fudge)/2 ,0])
+    circle(d=(overhang-plywoodThickness-fudge));
+}
+
+
+module B1() {
+
+
+halfRound(); // If you want sqare edges, change this the indentical module bellow to "half();"
 
  mirror([1, 0, 0]){
-  half();
+  halfRound();
 }
 } // End defining module B1
 
@@ -71,3 +94,4 @@ B1();
 
 // Printing objectt
 B();
+

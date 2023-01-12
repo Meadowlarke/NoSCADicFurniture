@@ -1,11 +1,11 @@
 // Box Bottom, in millimeters, currently set to UHaul small box internal sizes
  
 width=320; // Internal measurement
-length=425; // Internal measurment
-plywoodThickness=6.35;
+length=415; // Internal measurment
+plywoodThickness=5.2;
 tabWidthW=width/2;
 tabWidthL=length/2;
-undercut=0.75; // How far tabs are inset after assemly. Nomadic Furniture places it at 1/2--3/4 plywood thickness
+undercut=0.9; // How far tabs are inset after assemly. Nomadic Furniture places it at 1/2--3/4 plywood thickness
 
 module quarter(){
 square([width/2, length/2]);
@@ -28,7 +28,7 @@ mirror([1, 0, 0]){
 }
 
 module C(){
-translate([width/2+plywoodThickness*0.75, length/2+plywoodThickness*0.75]){
+translate([width/2+plywoodThickness*undercut, length/2+plywoodThickness*undercut]){
 
 half();
 
@@ -39,3 +39,4 @@ half();
 }
 
 C();
+
