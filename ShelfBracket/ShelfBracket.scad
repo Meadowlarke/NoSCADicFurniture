@@ -5,19 +5,29 @@ include <../Round-Anything/polyround.scad>
 
 $fn=360; // This makes round edges acutually round.  
 
-sidex = 300; // Board side
-sidey = 300; // Wall side
-width = 25;
-allowance = 1; // Bend allowance for thickness of steel, find a table for your material. This allowance is incoperated into the 2D renderings of the strap, but not the 3D renderings, or, in other words, the 3D renderings already take into account your bend allowance when all parts are present. 
+sidex = 250; // Board side
+sidey = 175; // Wall side
+width = 29;
+allowance = 0; // Bend allowance for thickness of steel, find a table for your material. Set to 0 when prevewing 3D part!
 
 screwHead = 13;
-screwShaft = 10;
+screwShaft = 7;
 
 thickness = 5;
 
-    bridgeW = 30;
+    bridgeW = 25;
+    
+tabWidth = 20;
 
-overlap = 5; // How much of the bridge is "ground down" to give surface for welding
+tabDepthPercent=.9;
+
+tabReverseDepth = 10; // This is how far the tabs go into the BRIDGE in order to be a smooth shape.
+
+tabFudge=1;
+    
+//percentSupport=0.9; // Percent of full length that the bridge supports.
+
+overlap = 2; // How much of the bridge is "ground down" to give surface for welding
 
 sidexB = sidex-screwShaft*2-width/4-bridgeW/2; // Shortened value of x to more easily draw the bridge length
 sideyB = sidey-screwShaft*2-width/4-bridgeW/2; // Same idea
@@ -27,7 +37,7 @@ sideyB = sidey-screwShaft*2-width/4-bridgeW/2; // Same idea
       
       hull() {
       circle(d = screwShaft);
-      translate([0, -screwShaft,0]){
+      translate([0, -screwShaft*1.5,0]){
           circle(d=screwHead);
           }
       
@@ -58,6 +68,11 @@ module strapx(){
        dropHole();}
            
            }
+           
+        // Groove
+           
+           translate([width/2-thickness/2-tabFudge/2,sidexB-tabWidth/2-tabFudge-allowance/2-bridgeW/2,0])
+           square([thickness+tabFudge,tabWidth+tabFudge]);
         
     }
 }
@@ -66,77 +81,13 @@ module strapxtrude(){
     linear_extrude(thickness){
         
         
-        difference(){ // Making strap with screw holes
-        
-        union(){ // Body of the strap
-        
-        square([width,sidex-width/2]);
-    
-    translate([width/2,sidex-width/2,0]){
-    circle(d = width);
-    }        
-        }
-        
-        // The holes
-        
-        translate([width/2, sidex - width/2,0]){
-       circle(d= screwShaft);}
-       
-       translate([width/2,screwShaft/2+width/2,0]){
-           
-           rotate([180,0,0]){
-       dropHole();}
-           
-           }
-        
-    } 
-        
-        
-        
-    } 
-}
+       strapx();
+}}
 
 
 
-module strapytrude(){
-    
-    translate([0,0,thickness]){
-    
-    rotate([90,0,0]){
-        
-       linear_extrude(thickness){ 
-           
-         difference(){
-           
-           union(){
-           
-    square([width,sidey-width/2]);
-    
-    translate([width/2,sidey-width/2,0]){
-    circle(d = width);
-    }
-}
-    translate([width/2,sidey-width/2,0]){
-    circle(d=screwShaft);
-    }
 
-    translate([width/2,screwShaft/2+width/2,0]){
-        rotate([0,0,180]){
-        dropHole();
-        }
-        
-        }
-
-
-}
-    
-}
-}
-
-}
-}
-
-module strapy(){ //This is a copy of strapytrude without the extrusion... Less than ideal, but the only way that I can figure out how to get this to work.
+module strapy(){ 
              difference(){
            
            union(){
@@ -158,10 +109,25 @@ module strapy(){ //This is a copy of strapytrude without the extrusion... Less t
         
         }
 
+// Tab Groove
+
+    translate([width/2-thickness/2-tabFudge/2,sideyB-tabWidth/2-tabFudge-allowance/2-bridgeW/2,0])
+    square([thickness+tabFudge,tabWidth+tabFudge]);
+
+
 
 }
     
 }
+
+
+module strapytrude(){
+    
+    rotate([90,0,0])
+    linear_extrude(thickness)
+  strapy();
+}
+
 
 
 
@@ -202,14 +168,18 @@ inner();
 }
 
 
+    
+
+
 
 // Primary part of the bridge    
+translate([thickness*tabDepthPercent,thickness*tabDepthPercent,0]){
 
     intersection(){
         square([sidexB,sideyB]);
-        ring();
+        ring();}
         
-        }    
+         
 
 // Ball on z-axis
 
@@ -228,12 +198,21 @@ translate([sidexB,bridgeW/2-overlap,0]){
 circle(d = bridgeW);
 }
 }
-    
-    }
+
+//Tabs
+
+translate([-thickness*tabDepthPercent,sideyB-tabWidth/2-tabFudge/2-bridgeW/2,0])
+square([thickness*tabDepthPercent+tabReverseDepth,tabWidth]);
+
+translate([sidexB-tabWidth/2-tabFudge/2-bridgeW/2,-thickness*tabDepthPercent,0])
+square([tabWidth, thickness*tabDepthPercent+tabReverseDepth]);
+
+
+    }}
     
     
     module bridge(){
-    translate([width/2-thickness/2,-thickness,0]){
+    translate([width/2-thickness/2,0,thickness]){
     rotate([90,0,90]){
         linear_extrude(thickness){
     TwoDBridge();}
@@ -268,16 +247,23 @@ polygon(concat([[0, 0]], points));}
 
 module ThreeDModel(){
 translate([0,thickness,0]){
-
 strapxtrude();
+    translate([0,0,thickness])
 strapytrude();
+translate([0,-thickness*tabDepthPercent,-thickness*tabDepthPercent])
+    translate([0,0,0])
 bridge();
-bendFillet();}
+bendFillet();
+    }
 
 }
 
 
 module TwoDStrap(){
+    
+    difference(){
+    
+    union(){
     translate([0,sidey-allowance/2,0]){
     strapx();
     }
@@ -287,15 +273,24 @@ module TwoDStrap(){
      strapy();
         }
     }
-    
+}
+
+//Bending perferations
+
+for (i=[1.5:2:width-1])
+translate([i,sidey-allowance/2,0])
+circle(d=1);
 
     
-    
+
+
+
+  }  
 }
 
 
-// ThreeDModel();
+ThreeDModel(); //Remeber to set allowance to 0
 
-TwoDStrap();
+//TwoDStrap(); // Remeber to reset allowance FROM 0
 
-//TwoDBridge();
+//TwoDBridge(); // Same as above
