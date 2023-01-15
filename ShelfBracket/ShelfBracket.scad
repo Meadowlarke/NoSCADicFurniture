@@ -8,12 +8,20 @@ $fn=360; // This makes round edges acutually round.
 sidex = 250; // Board side
 sidey = 175; // Wall side
 width = 29;
-allowance = 0; // Bend allowance for thickness of steel, find a table for your material. Set to 0 when prevewing 3D part!
+
+thickness = 5;
+bendRadius = 5; // This depends on your bending tool. For metals under ~6mm, the bend radius can be assumed to be the same as the metal thickness.
+
+Kfactor = .44; // Look this up on a chart for you metal. This is the number for bottom bending mild steel of 0 to 1 metal thickness.
+
+allowance = 90*3.14/180*(bendRadius+Kfactor*thickness); // Bend allowance formula. Comment out and set to 0 to accurately preview 3D part. If you don't set it to 0 for the 3D preview, the preview will show how far *off* the piece will be if you do not account for K factor, but in the opposite direction
+
+//allowance = 0;
 
 screwHead = 13;
 screwShaft = 7;
 
-thickness = 5;
+
 
     bridgeW = 25;
     
