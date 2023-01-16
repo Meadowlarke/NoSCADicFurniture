@@ -8,7 +8,7 @@ X = 25; // Top width
 y = 50; // Length of part
 x = 5; // Bottom width
 
-s = 5; // Screw shaft size
+s = 4; // Screw shaft size
 
 h = 20; // height of bend (length of hook)
 
@@ -91,8 +91,8 @@ bottomHalf();
 
 // Flatpack
 
-//flatPack();
+flatPack();
 
 // 3D model
 
-TD();
+//TD();
