@@ -6,7 +6,7 @@ include <../Round-Anything/polyround.scad>
 $fn=360; // This makes round edges acutually round.  
 
 sidex = 250; // Board side
-sidey = 175; // Wall side
+sidey = 250; // Wall side
 width = 29;
 
 thickness = 5;
@@ -14,16 +14,15 @@ bendRadius = 5; // This depends on your bending tool. For metals under ~6mm, the
 
 Kfactor = .44; // Look this up on a chart for you metal. This is the number for bottom bending mild steel of 0 to 1 metal thickness.
 
-allowance = 90*3.14/180*(bendRadius+Kfactor*thickness); // Bend allowance formula. Comment out and set to 0 to accurately preview 3D part. If you don't set it to 0 for the 3D preview, the preview will show how far *off* the piece will be if you do not account for K factor, but in the opposite direction
+//allowance = 90*3.14/180*(bendRadius+Kfactor*thickness); // Bend allowance formula. Comment out and set to 0 to accurately preview 3D part. If you don't set it to 0 for the 3D preview, the preview will show how far *off* the piece will be if you do not account for K factor, but in the opposite direction
 
-//allowance = 0;
+allowance = 0;
 
 screwHead = 13;
 screwShaft = 7;
 
 
-
-    bridgeW = 25;
+bridgeW = 25;
     
 tabWidth = 20;
 
@@ -33,12 +32,18 @@ tabReverseDepth = 10; // This is how far the tabs go into the BRIDGE in order to
 
 tabFudge=1;
     
-//percentSupport=0.9; // Percent of full length that the bridge supports.
+overhangx = 5;
+
+overhangy = 5;
 
 overlap = 2; // How much of the bridge is "ground down" to give surface for welding
 
-sidexB = sidex-screwShaft*2-width/4-bridgeW/2; // Shortened value of x to more easily draw the bridge length
-sideyB = sidey-screwShaft*2-width/4-bridgeW/2; // Same idea
+contactSize = sqrt(sidex^2-(sidex-overlap)^2);
+
+echo("Contact pactch roughly equal to", contactSize);
+
+sidexB = sidex-screwShaft*2-width/4-bridgeW/2-overhangx; // Shortened value of x to more easily draw the bridge length
+sideyB = sidey-screwShaft*2-width/4-bridgeW/2-overhangy; // Same idea
 
 
   module dropHole(){
