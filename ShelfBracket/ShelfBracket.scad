@@ -1,3 +1,4 @@
+
 // This is combined document containing the 3D mockup and flat sheet metal files. 
  
 
@@ -6,10 +7,10 @@ include <../Round-Anything/polyround.scad>
 $fn=360; // This makes round edges acutually round.  
 
 sidex = 250; // Board side
-sidey = 250; // Wall side
-width = 29;
+sidey = 250*.75; // Wall side
+width = 25;
 
-thickness = 5;
+thickness = 3.1;
 bendRadius = 5; // This depends on your bending tool. For metals under ~6mm, the bend radius can be assumed to be the same as the metal thickness.
 
 Kfactor = .44; // Look this up on a chart for you metal. This is the number for bottom bending mild steel of 0 to 1 metal thickness.
@@ -18,19 +19,20 @@ Kfactor = .44; // Look this up on a chart for you metal. This is the number for 
 
 allowance = 0;
 
-screwHead = 13;
-screwShaft = 7;
+screwHead = 15;
+screwShaft = 9;
 
 
 bridgeW = 25;
     
 tabWidth = 20;
 
-tabDepthPercent=.9;
+tabDepthPercent=.8;
 
 tabReverseDepth = 10; // This is how far the tabs go into the BRIDGE in order to be a smooth shape.
 
-tabFudge=1;
+tabFudge=2;
+tabFudgeLength=4;
     
 overhangx = 5;
 
@@ -84,8 +86,8 @@ module strapx(){
            
         // Groove
            
-           translate([width/2-thickness/2-tabFudge/2,sidexB-tabWidth/2-tabFudge-allowance/2-bridgeW/2,0])
-           square([thickness+tabFudge,tabWidth+tabFudge]);
+           translate([width/2-thickness/2-tabFudge/2,sidexB-tabWidth/2-tabFudgeLength/2-allowance/2-bridgeW/2,0])
+           square([thickness+tabFudge,tabWidth+tabFudgeLength]);
         
     }
 }
@@ -124,8 +126,8 @@ module strapy(){
 
 // Tab Groove
 
-    translate([width/2-thickness/2-tabFudge/2,sideyB-tabWidth/2-tabFudge-allowance/2-bridgeW/2,0])
-    square([thickness+tabFudge,tabWidth+tabFudge]);
+    translate([width/2-thickness/2-tabFudge/2,sideyB-tabWidth/2-tabFudgeLength/2-allowance/2-bridgeW/2,0])
+    square([thickness+tabFudge,tabWidth+tabFudgeLength]);
 
 
 
@@ -214,10 +216,10 @@ circle(d = bridgeW);
 
 //Tabs
 
-translate([-thickness*tabDepthPercent,sideyB-tabWidth/2-tabFudge/2-bridgeW/2,0])
+translate([-thickness*tabDepthPercent,sideyB-tabWidth/2-bridgeW/2,0])
 square([thickness*tabDepthPercent+tabReverseDepth,tabWidth]);
 
-translate([sidexB-tabWidth/2-tabFudge/2-bridgeW/2,-thickness*tabDepthPercent,0])
+translate([sidexB-tabWidth/2-bridgeW/2,-thickness*tabDepthPercent,0])
 square([tabWidth, thickness*tabDepthPercent+tabReverseDepth]);
 
 
@@ -290,9 +292,9 @@ module TwoDStrap(){
 
 //Bending perferations
 
-for (i=[1.5:2:width-1])
+for (i=[0:width:width])
 translate([i,sidey-allowance/2,0])
-circle(d=1);
+circle(d=3);
 
     
 
@@ -302,8 +304,8 @@ circle(d=1);
 }
 
 
-ThreeDModel(); //Remeber to set allowance to 0
+//ThreeDModel(); //Remeber to set allowance to 0
 
-//TwoDStrap(); // Remeber to reset allowance FROM 0
+TwoDStrap(); // Remeber to reset allowance FROM 0
 
 //TwoDBridge(); // Same as above
