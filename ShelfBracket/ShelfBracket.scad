@@ -306,6 +306,6 @@ circle(d=3);
 
 //ThreeDModel(); //Remeber to set allowance to 0
 
-TwoDStrap(); // Remeber to reset allowance FROM 0
+//TwoDStrap(); // Remeber to reset allowance FROM 0
 
-//TwoDBridge(); // Same as above
+TwoDBridge(); // Same as above
