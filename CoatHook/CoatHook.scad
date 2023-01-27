@@ -8,13 +8,13 @@ X = 25; // Top width
 y = 50; // Length of part
 x = 5; // Bottom width
 
-s = 5.9; // Screw shaft size (diameter)
+s = 4; // Screw shaft size (diameter)
 
 h = 20; // height of bend (length of hook)
 
 a = 220; // angle of bend
 
-t = 5; // Metal thickness, for 3D mockup.
+t = 3; // Metal thickness, for 3D mockup.
 
 module body(){
 
@@ -93,9 +93,9 @@ bottomHalf();
 
 flatPack();
 
-translate([X*1.68,y*1.5,0])
-rotate([0,0,180])
-flatPack();
+//translate([X*1.68,y*1.5,0])
+//rotate([0,0,180])
+//flatPack();
 
 // 3D model
 

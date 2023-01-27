@@ -3,6 +3,7 @@ width=300;
 length=200;
 depth=50;
 
+boardThickness=25; //Thickness of the wooden board that will be the back panel. Can also just be used to round top corner.
 
 
 
@@ -14,7 +15,7 @@ square([width,length]);
 
 module wing(){
   ;
-    polygon(points=[[0,0],[depth,length],[depth,0]]);
+    polygon(points=[[0,0],[0,boardThickness],[depth,length], [depth,0]]);
 }
 
 
